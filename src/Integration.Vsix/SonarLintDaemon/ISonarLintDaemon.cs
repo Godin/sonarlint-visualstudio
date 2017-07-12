@@ -38,7 +38,7 @@ namespace SonarLint.VisualStudio.Integration.Vsix
         void Start();
         void Stop();
 
-        void RequestAnalysis(string path, string charset, IIssueConsumer consumer);
+        void RequestAnalysis(string path, string charset, string json, IIssueConsumer consumer);
     }
 
     public interface IIssueConsumer

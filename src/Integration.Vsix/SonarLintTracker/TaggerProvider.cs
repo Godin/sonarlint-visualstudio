@@ -28,6 +28,10 @@ using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
 using Sonarlint;
+using Newtonsoft.Json;
+using System.IO;
+using System.Text;
+using Microsoft.VisualStudio.Shell;
 
 namespace SonarLint.VisualStudio.Integration.Vsix
 {
@@ -92,7 +96,7 @@ namespace SonarLint.VisualStudio.Integration.Vsix
 
             var path = document.FilePath;
             // TODO find a better way to detect JavaScript
-            if (!path.ToLowerInvariant().EndsWith(".js"))
+            if (!path.ToLowerInvariant().EndsWith(".js") && !path.ToLowerInvariant().EndsWith(".cpp") && !path.ToLowerInvariant().EndsWith(".cxx") && !path.ToLowerInvariant().EndsWith(".cc") && !path.ToLowerInvariant().EndsWith(".c"))
             {
                 return null;
             }
@@ -173,7 +177,7 @@ namespace SonarLint.VisualStudio.Integration.Vsix
 
         public void RequestAnalysis(string path, string charset)
         {
-            daemon.RequestAnalysis(path, charset, this);
+            daemon.RequestAnalysis(path, charset, CFamily.TryGetConfig(path), this);
         }
 
         public void Accept(string path, IEnumerable<Issue> issues)
